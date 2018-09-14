@@ -4,8 +4,8 @@
 class Empresa;
 class Funcionario{
 	private:
-		std::string		s_nome;
-		float			s_salario;
+		std::string	_nome;
+		float		_salario;
 		std::string     _constructedBy;
 	public:
 		Funcionario();
@@ -26,6 +26,7 @@ class Funcionario{
 
 		// Sobrecarga de operadores
 		bool         operator==(Funcionario f);
+		bool         operator==(Funcionario& f);
 		Funcionario& operator=(Funcionario f);
 		Funcionario  operator+(Funcionario &f);
 		//Empresa&    operator+(Funcionario f);
