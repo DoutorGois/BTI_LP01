@@ -3,6 +3,7 @@
 #include<iostream>
 #include<vector>
 #include<iomanip>
+#include<typeinfo>
 
 Empresa::Empresa():_nome("José LTDA"),_CNPJ(0){
 	s_empresas.push_back(this);
@@ -54,7 +55,7 @@ void Empresa::imprimeEmpresas(){
 		for(unsigned int f=0; f<c_plantel.size(); f++){
 			f_cont = f_cont + 1;
 			std::cout << std::setw(3) << f_cont;
-			std::cout << std::setw(10) << s_empresas[e]->getNome();
+			std::cout << std::setw(15) << s_empresas[e]->getNome();
 			std::cout << std::setw(10) <<  c_plantel[f]->getNome();
 			std::cout << std::setw(8) << "$" << c_plantel[f]->getSalario() << std::endl;
 			f_salario = f_salario+ c_plantel[f]->getSalario();
@@ -70,13 +71,16 @@ void Empresa::imprimeEmpresas(){
 		f_salario_empresa = 0.0;
 		for(unsigned int f=0; f<c_plantel.size(); f++)
 			f_salario_empresa = f_salario_empresa + c_plantel[f]->getSalario();
-		std::cout << "Empresa " << s_empresas[e]->getNome() << "\tN: " << c_plantel.size() << "\tTotal: " << f_salario_empresa << "\tMédia: " << f_salario_empresa/c_plantel.size()<<std::endl;
+		std::cout << "Empresa " << s_empresas[e]->getNome();
+		std::cout << std::setw(15) << "N: "     << c_plantel.size();
+		std::cout << std::setw(10) << "Total: " << f_salario_empresa;
+		std::cout << std::setw(10) << "Média: " << f_salario_empresa/c_plantel.size()<<std::endl;
 	}
 
 	std::cout << std::endl << std::endl << "+-----------------+";
 	std::cout << std::endl << "+--Sumário geral--+";
 	std::cout << std::endl << "+-----------------+"<<std::endl;
-	std::cout << "# empresas: " <<s_empresas.size() << std::endl;
+	std::cout << "# empresas: " << s_empresas.size() << std::endl;
 	std::cout << "# funcionarios: "<< f_cont<< std::endl;
 	std::cout << "Média salarial: " << f_salario/f_cont << std::endl;
 }
@@ -89,9 +93,16 @@ void Empresa::aumentarSalario(float pct){
 		_plantel[f]->setSalario(novo_salario);
 	}
 }
+
+
 bool Empresa::addFuncionario(){
 	Funcionario* novo = new Funcionario();
 	std::cin >> *novo;
+
+	return addFuncionario(novo);
+}
+
+bool Empresa::addFuncionario(Funcionario *novo){
 	for(unsigned int f=0; f<_plantel.size();f++){
 		if(*novo==*_plantel[f]){
 			std::cerr << std::endl <<"\033[1;47;4;31m";
@@ -105,6 +116,29 @@ bool Empresa::addFuncionario(){
 	s_n_funcionarios++;
 	s_total_salario = s_total_salario + novo->getSalario();
 	return true;
+}
+
+
+Empresa& Empresa::operator+(Funcionario &f){
+	this->addFuncionario(&f);	
+	return *this;
+}
+Empresa& Empresa::operator+(Empresa &e){
+	Empresa * nova = new Empresa();
+
+	std::string nome = "";
+
+	for(unsigned int f=0; f<_plantel.size(); f++)
+		nova->addFuncionario(_plantel[f]);
+
+	for(unsigned int f=0; f<e.getPlantel().size(); f++)
+		nova->addFuncionario(e.getPlantel()[f]);
+
+	nome = this->getNome().substr(0,1) + "&" + e.getNome().substr(0,1) + " M&A";
+
+	nova->setNome(nome);
+
+	return *nova;
 }
 
 std::ostream& operator<<(std::ostream& o, Empresa &e){

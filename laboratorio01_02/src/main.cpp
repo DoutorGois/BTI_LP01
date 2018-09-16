@@ -30,6 +30,17 @@ int main(){
 		std::cout << *empresas[ei];
 		Empresa::imprimeMediaSalarial();
 	}
+
+	Funcionario * f1 = new Funcionario("José",3000.0);
+	Funcionario * f2 = new Funcionario("Sara",3000.0);
+	Funcionario * f3 = new Funcionario("Sana",3000.0);
+
+	empresas.push_back(&(*f1 + *f2 + *f3 +*f3));
+
+	if(empresas.size()>=3)
+		*f3 + *f1 + *empresas[2] + *f3 + *f3;
+
+
 	Empresa::imprimeEmpresas();
 	return 0;
 

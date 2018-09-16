@@ -4,6 +4,7 @@
 #include<iostream>
 #include<vector>
 class Funcionario;
+#include "funcionario.h"
 typedef std::vector<Funcionario*> plantel;
 
 class Empresa{
@@ -32,8 +33,12 @@ class Empresa{
 		plantel& getPlantel();
 
 		bool addFuncionario();
+		bool addFuncionario(Funcionario *);
 
 		void aumentarSalario(float pct);
+
+		Empresa & operator+(Funcionario &f);
+		Empresa & operator+(Empresa &e);
 
 		friend std::ostream& operator<<(std::ostream& o, Empresa &e);
 		friend std::istream& operator>>(std::istream& i, Empresa &e);

@@ -1,5 +1,7 @@
 #include "funcionario.h"
+#include "empresa.h"
 #include<iostream>
+#include<string>
 
 Funcionario::Funcionario():_nome("José"),_salario(2200.0){}
 Funcionario::Funcionario(std::string nome, float salario):_nome(nome),_salario(salario){}
@@ -48,5 +50,23 @@ std::istream& operator>>(std::istream& i, Funcionario &f){
 	return i;
 }
 
+Empresa& Funcionario::operator+(Funcionario &f){
+	Empresa *empresa = new Empresa();
+
+	empresa->setNome(this->_nome.substr(0,1) + "&"+ f.getNome().substr(0,1) + " Cia");
+	empresa->setCNPJ(0);
+	empresa->addFuncionario(&f);
+	empresa->addFuncionario(this);
+
+	return *empresa;
+}
+
+Empresa& Funcionario::operator+(Empresa &e){
+
+	e.setNome(this->_nome.substr(0,1) + "&" + e.getNome() + " Cia");
+	e.addFuncionario(this);
+
+	return e;
+}
 
 
